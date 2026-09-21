@@ -1,0 +1,136 @@
+/* Design tokens */
+
+:root {
+
+  /* Typography */
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Colors */
+
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-text-secondary: #737373;
+  --color-text-muted: #a3a3a3;
+
+  --color-border: #e5e5e5;
+  --color-grid: #eeeeee;
+
+  --color-accent: #3b82f6;
+  --color-positive: #16a34a;
+  --color-negative: #dc2626;
+
+  /* Layout */
+
+  --content-max-width: 1440px;
+}
+
+
+/* Reset */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+
+/* Forms and controls */
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+
+/* Links */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* Media */
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* Selection */
+
+::selection {
+  background: #dbeafe;
+  color: var(--color-text);
+}
+
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 999px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  :root {
+    --content-max-width: 100%;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
