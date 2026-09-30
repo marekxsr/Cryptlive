@@ -304,3 +304,219 @@ svg {
 
   cursor: pointer;
 }
+
+
+/* Dashboard layout */
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  min-height: calc(100vh - 52px);
+}
+
+/* Assets sidebar */
+
+.assets-sidebar {
+  border-right: 1px solid var(--color-border);
+  padding: 24px 0;
+  background: var(--color-bg);
+}
+
+.assets-title {
+  margin: 0 24px 16px;
+
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.asset-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-row {
+  display: grid;
+  grid-template-columns: 32px minmax(70px, 1fr) auto 20px;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 68px;
+  padding: 8px 20px;
+
+  border-bottom: 1px solid transparent;
+
+  transition: background 0.15s ease;
+}
+
+.asset-row:hover {
+  background: #fafafa;
+}
+
+.asset-row.active {
+  background: #f5f5f5;
+}
+
+/* Coin icon */
+
+.asset-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.asset-icon.btc {
+  background: #f7931a;
+}
+
+.asset-icon.eth {
+  background: #627eea;
+}
+
+.asset-icon.sol {
+  background: #111111;
+}
+
+.asset-icon.xrp {
+  background: #222222;
+}
+
+.asset-icon.bnb {
+  background: #f3ba2f;
+}
+
+.asset-icon.doge {
+  background: #c2a633;
+}
+
+.asset-icon.ada {
+  background: #3468d4;
+}
+
+.asset-icon.avax {
+  background: #e84142;
+}
+
+/* Coin name */
+
+.asset-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.asset-info strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.asset-info span {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+/* Price */
+
+.asset-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+
+  white-space: nowrap;
+}
+
+.asset-price strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.asset-price span {
+  font-size: 12px;
+}
+
+.positive {
+  color: var(--color-positive);
+}
+
+.negative {
+  color: var(--color-negative);
+}
+
+/* Star */
+
+.star {
+  color: #f59e0b;
+  font-size: 16px;
+  opacity: 0;
+
+  transition: opacity 0.15s ease;
+}
+
+.asset-row:hover .star,
+.asset-row.active .star {
+  opacity: 1;
+}
+
+/* Move existing chart into the center column */
+
+.chart-section {
+  width: 100%;
+  min-width: 0;
+  padding: 24px 40px 40px;
+}
+
+.market-header {
+  max-width: none;
+  margin-bottom: 24px;
+}
+
+.market-chart {
+  max-width: none;
+}
+
+.timeframes {
+  max-width: none;
+}
+
+/* Mobile */
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .asset-row {
+    grid-template-columns: 30px minmax(50px, 1fr) auto;
+  }
+
+  .star {
+    display: none;
+  }
+
+  .chart-section {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-layout {
+    display: block;
+  }
+
+  .assets-sidebar {
+    display: none;
+  }
+}
