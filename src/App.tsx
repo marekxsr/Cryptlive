@@ -142,7 +142,69 @@ function App() {
             <button type="button">1W</button>
             <button type="button">1M</button>
           </nav>
+
+          
         </section>
+                  <aside className="trending-sidebar">
+            <p className="trending-title">TRENDING</p>
+
+            <div className="trending-list">
+              <div className="trending-row">
+                <div className="trending-icon link">↗</div>
+
+                <div className="trending-info">
+                  <strong>LINK</strong>
+                  <span>Chainlink</span>
+                </div>
+
+                <span className="positive">+6.44%</span>
+              </div>
+
+              <div className="trending-row">
+                <div className="trending-icon doge">Ð</div>
+
+                <div className="trending-info">
+                  <strong>DOGE</strong>
+                  <span>Dogecoin</span>
+                </div>
+
+                <span className="positive">+5.12%</span>
+              </div>
+
+              <div className="trending-row">
+                <div className="trending-icon avax">A</div>
+
+                <div className="trending-info">
+                  <strong>AVAX</strong>
+                  <span>Avalanche</span>
+                </div>
+
+                <span className="positive">+4.31%</span>
+              </div>
+
+              <div className="trending-row">
+                <div className="trending-icon xrp">X</div>
+
+                <div className="trending-info">
+                  <strong>XRP</strong>
+                  <span>XRP</span>
+                </div>
+
+                <span className="positive">+3.21%</span>
+              </div>
+
+              <div className="trending-row">
+                <div className="trending-icon btc">₿</div>
+
+                <div className="trending-info">
+                  <strong>BTC</strong>
+                  <span>Bitcoin</span> 
+                </div>
+
+                <span className="positive">+2.48%</span>
+              </div>
+            </div>
+          </aside>
         </div>
       </main>
     </>
