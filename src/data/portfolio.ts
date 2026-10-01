@@ -1,0 +1,38 @@
+export const portfolioHoldings = [
+  {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    price: '$114,523.42',
+    amount: '0.125 BTC',
+    value: '$14,315.43',
+    icon: '₿',
+    iconClass: 'btc',
+  },
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    price: '$4,322.18',
+    amount: '1.82 ETH',
+    value: '$7,866.37',
+    icon: '◆',
+    iconClass: 'eth',
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    price: '$193.24',
+    amount: '8.42 SOL',
+    value: '$1,627.08',
+    icon: '≋',
+    iconClass: 'sol',
+  },
+  {
+    symbol: 'DOGE',
+    name: 'Dogecoin',
+    price: '$0.181',
+    amount: '4,000 DOGE',
+    value: '$724.00',
+    icon: 'Ð',
+    iconClass: 'doge',
+  },
+]
