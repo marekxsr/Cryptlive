@@ -9,7 +9,8 @@ function App() {
   return (
     <>
       <Header view={view} onViewChange={setView} />
-// Pass the current view and the function to change it as props to the Header component
+      
+      {/* Pass the current view and the function to change it as props to the Header component */}
       <main className="market-page">
         <div className="dashboard-layout">
           <aside className="assets-sidebar">
@@ -131,7 +132,8 @@ function App() {
           </div>
 
           <MarketChart />
-// Render the MarketChart component
+        
+          {/* Render the MarketChart component */}
           <nav className="timeframes" aria-label="Chart timeframe">
             <button type="button">1m</button>
             <button type="button" className="active">5m</button>
