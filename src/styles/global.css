@@ -697,3 +697,168 @@ svg {
   font-weight: 600;
   white-space: nowrap;
 }
+
+
+/* Portfolio page */
+
+.portfolio-page {
+  padding: 32px 40px 48px;
+  background: #ffffff;
+  min-height: calc(100vh - 64px);
+}
+
+.portfolio-header {
+  margin-bottom: 28px;
+}
+
+.portfolio-label {
+  margin: 0 0 8px;
+  color: #999999;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.portfolio-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.portfolio-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.portfolio-card {
+  padding: 20px 10px;
+  border: 1px solid #eeeeee;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.portfolio-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #888888;
+  font-size: 13px;
+}
+
+.portfolio-card strong {
+  color: #111111;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.portfolio-card .positive {
+  color: #22a45d;
+}
+
+.portfolio-holdings {
+  margin-top: 8px;
+}
+
+.portfolio-section-header {
+  margin-bottom: 16px;
+}
+
+.portfolio-section-header h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-top: 1px solid #eeeeee;
+}
+
+.portfolio-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
+  min-height: 72px;
+  border-bottom: 1px solid #eeeeee;
+  color: #222222;
+  font-size: 14px;
+}
+
+.portfolio-row-header {
+  min-height: 44px;
+  color: #999999;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.portfolio-asset {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portfolio-asset strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #111111;
+  font-size: 14px;
+}
+
+.portfolio-asset span {
+  display: block;
+  color: #999999;
+  font-size: 12px;
+}
+
+.asset-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.asset-icon.btc {
+  background: #f7931a;
+}
+
+.asset-icon.eth {
+  background: #627eea;
+}
+
+.asset-icon.sol {
+  background: #111111;
+}
+
+.asset-icon.doge {
+  background: #c9a227;
+}
+
+@media (max-width: 800px) {
+  .portfolio-page {
+    padding: 24px 20px 40px;
+  }
+
+  .portfolio-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-row {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .portfolio-row-header {
+    font-size: 9px;
+  }
+}
