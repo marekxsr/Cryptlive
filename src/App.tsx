@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import MarketChart from './components/MarketChart'
 import Header from "./components/Header"; // Import the Header component
+import Portfolio from './pages/Portfolio' // Import the Portfolio component
 
 
 function App() {
@@ -11,6 +12,9 @@ function App() {
       <Header view={view} onViewChange={setView} />
 
       {/* Pass the current view and the function to change it as props to the Header component */}
+      {view === 'portfolio' ? (// Render the Portfolio component if the current view is portfolio
+        <Portfolio />
+      ) : (
       <main className="market-page">
         <div className="dashboard-layout">
 
@@ -242,6 +246,7 @@ function App() {
 
         </div>
       </main>
+      )}
     </>
   )
 }
