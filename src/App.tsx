@@ -124,13 +124,39 @@ function App() {
           </aside>
 
           
-        <section className="chart-section">
-          <div className="market-header">
-            <p className="market-pair">Bitcoin / USD</p>
-            <h1 className="market-price">$114,523.42</h1>
-            <p className="market-change">+2.48% (24h)</p>
+        <section className="chart-section"> 
+        {/* Chart section */}
+        <div className="market-info">
+          <div className="market-main">
+            <div className="market-name">Bitcoin / USD</div>
+
+            <div className="market-price">$114,523.42</div>
+
+            <div className="market-change">▲ 2.48% <span>24h</span></div>
           </div>
 
+          <div className="market-stats">
+            <div className="market-stat">
+              <span>MARKET CAP</span>
+              <strong>$2.26T</strong>
+            </div>
+
+            <div className="market-stat">
+              <span>24H VOLUME</span>
+              <strong>$48.31B</strong>
+            </div>
+
+            <div className="market-stat">
+              <span>24H HIGH</span>
+              <strong>$115,321.18</strong>
+            </div>
+
+            <div className="market-stat">
+              <span>24H LOW</span>
+              <strong>$111,842.00</strong>
+            </div>
+          </div>
+        </div>
           <MarketChart />
         
           {/* Render the MarketChart component */}
