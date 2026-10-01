@@ -9,10 +9,11 @@ function App() {
   return (
     <>
       <Header view={view} onViewChange={setView} />
-      
+
       {/* Pass the current view and the function to change it as props to the Header component */}
       <main className="market-page">
         <div className="dashboard-layout">
+
           <aside className="assets-sidebar">
             <p className="assets-title">ALL ASSETS</p>
 
@@ -123,60 +124,64 @@ function App() {
             </div>
           </aside>
 
-          
-        <section className="chart-section"> 
-        {/* Chart section */}
-        <div className="market-info">
-          <div className="market-main">
-            <div className="market-name">Bitcoin / USD</div>
+          <section className="chart-section">
 
-            <div className="market-price">$114,523.42</div>
+            {/* Chart section */}
+            <div className="market-info">
+              <div className="market-main">
+                <div className="market-name">Bitcoin / USD</div>
 
-            <div className="market-change">▲ 2.48% <span>24h</span></div>
-          </div>
+                <div className="market-price">$114,523.42</div>
 
-          <div className="market-stats">
-            <div className="market-stat">
-              <span>MARKET CAP</span>
-              <strong>$2.26T</strong>
+                <div className="market-change">
+                  ▲ 2.48% <span>24h</span>
+                </div>
+              </div>
+
+              <div className="market-stats">
+                <div className="market-stat">
+                  <span>MARKET CAP</span>
+                  <strong>$2.26T</strong>
+                </div>
+
+                <div className="market-stat">
+                  <span>24H VOLUME</span>
+                  <strong>$48.31B</strong>
+                </div>
+
+                <div className="market-stat">
+                  <span>24H HIGH</span>
+                  <strong>$115,321.18</strong>
+                </div>
+
+                <div className="market-stat">
+                  <span>24H LOW</span>
+                  <strong>$111,842.00</strong>
+                </div>
+              </div>
             </div>
 
-            <div className="market-stat">
-              <span>24H VOLUME</span>
-              <strong>$48.31B</strong>
-            </div>
+            <MarketChart />
 
-            <div className="market-stat">
-              <span>24H HIGH</span>
-              <strong>$115,321.18</strong>
-            </div>
+            {/* Render the MarketChart component */}
+            <nav className="timeframes" aria-label="Chart timeframe">
+              <button type="button">1m</button>
+              <button type="button" className="active">5m</button>
+              <button type="button">15m</button>
+              <button type="button">1h</button>
+              <button type="button">4h</button>
+              <button type="button">1D</button>
+              <button type="button">1W</button>
+              <button type="button">1M</button>
+            </nav>
 
-            <div className="market-stat">
-              <span>24H LOW</span>
-              <strong>$111,842.00</strong>
-            </div>
-          </div>
-        </div>
-          <MarketChart />
-        
-          {/* Render the MarketChart component */}
-          <nav className="timeframes" aria-label="Chart timeframe">
-            <button type="button">1m</button>
-            <button type="button" className="active">5m</button>
-            <button type="button">15m</button>
-            <button type="button">1h</button>
-            <button type="button">4h</button>
-            <button type="button">1D</button>
-            <button type="button">1W</button>
-            <button type="button">1M</button>
-          </nav>
+          </section>
 
-          
-        </section>
-                  <aside className="trending-sidebar">
+          <aside className="trending-sidebar">
             <p className="trending-title">TRENDING</p>
 
             <div className="trending-list">
+
               <div className="trending-row">
                 <div className="trending-icon link">↗</div>
 
@@ -226,13 +231,15 @@ function App() {
 
                 <div className="trending-info">
                   <strong>BTC</strong>
-                  <span>Bitcoin</span> 
+                  <span>Bitcoin</span>
                 </div>
 
                 <span className="positive">+2.48%</span>
               </div>
+
             </div>
           </aside>
+
         </div>
       </main>
     </>
