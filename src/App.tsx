@@ -1,11 +1,89 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Header from './components/Header'
 import MarketChart from './components/MarketChart'
-import Header from "./components/Header"; // Import the Header component
-import Portfolio from './pages/Portfolio' // Import the Portfolio component
+import { fetchMarketData } from './services/market'
+import type { MarketTicker } from './types/market'
+import Portfolio from './pages/Portfolio'
+
+
+// Define a type for asset details, including name, icon, and CSS class name.
+type AssetDetails = {
+  name: string
+  icon: string
+  className: string
+}
+
+// Names and icons used to display Kraken market symbols in the dashboard.
+const assetDetails: Record<string, AssetDetails> = {
+  'BTC/USD': { name: 'Bitcoin', icon: '₿', className: 'btc' },
+  'ETH/USD': { name: 'Ethereum', icon: '◆', className: 'eth' },
+  'SOL/USD': { name: 'Solana', icon: '≋', className: 'sol' },
+  'XRP/USD': { name: 'XRP', icon: 'X', className: 'xrp' },
+  'BNB/USD': { name: 'BNB', icon: '◆', className: 'bnb' },
+  'DOGE/USD': { name: 'Dogecoin', icon: 'Ð', className: 'doge' },
+  'ADA/USD': { name: 'Cardano', icon: '✣', className: 'ada' },
+  'AVAX/USD': { name: 'Avalanche', icon: 'A', className: 'avax' },
+}
+
+// Format prices with more decimal places for cheaper coins.
+function formatPrice(price: number): string {
+  return price < 1
+    ? `$${price.toFixed(4)}`
+    : `$${price.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+}
 
 
 function App() {
   const [view, setView] = useState<'market' | 'portfolio'>('market')// State to manage the current view
+    //store the latest market prices received from our backend.
+  const [marketData, setMarketData] = useState<MarketTicker[]>([])
+  // Find Bitcoin in the latest market data.
+  const bitcoin = marketData.find(
+    (ticker) => ticker.symbol === 'BTC/USD',
+  )
+  //store an error message if the market data request fails.
+  const [marketError, setMarketError] = useState('')
+
+
+  // Load market data when the component opens and refresh it every 5 seconds.
+  useEffect(() => {
+    let isActive = true
+
+    const loadMarketData = async () => {
+      try {
+        const response = await fetchMarketData()
+
+        // Update the state only while this component is active.
+        if (isActive) {
+          setMarketData(response.data)
+          setMarketError('')
+        }
+      } catch (error) {
+        // Show an error if the backend cannot provide market data.
+        if (isActive) {
+          setMarketError(
+            error instanceof Error ? error.message : 'Failed to load market data',
+          )
+        }
+      }
+    }
+
+    // Fetch data immediately when the component opens.
+    void loadMarketData()
+
+    // Refresh the data every 5 seconds.
+    const intervalId = window.setInterval(() => {
+      void loadMarketData()
+    }, 5000)
+    // Stop refreshing when the component is removed.
+    return () => {
+      isActive = false
+      window.clearInterval(intervalId)
+    }
+  }, [])
 
   return (
     <>
@@ -15,116 +93,55 @@ function App() {
       {view === 'portfolio' ? (// Render the Portfolio component if the current view is portfolio
         <Portfolio />
       ) : (
+      <>
+      {marketError && <p role="alert">{marketError}</p>}
       <main className="market-page">
         <div className="dashboard-layout">
 
           <aside className="assets-sidebar">
-            <p className="assets-title">ALL ASSETS</p>
+            <p className="assets-title">ALL ASSETS ({marketData.length})</p>
 
             <div className="asset-list">
-              <div className="asset-row active">
-                <div className="asset-icon btc">₿</div>
-                <div className="asset-info">
-                  <strong>BTC</strong>
-                  <span>Bitcoin</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$114,523.42</strong>
-                  <span className="positive">+2.48%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite BTC">★</button>
-              </div>
+              {marketData.map((ticker) => {
+                const asset = assetDetails[ticker.symbol]
 
-              <div className="asset-row">
-                <div className="asset-icon eth">◆</div>
-                <div className="asset-info">
-                  <strong>ETH</strong>
-                  <span>Ethereum</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$4,322.18</strong>
-                  <span className="positive">+1.71%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite ETH">★</button>
-              </div>
+                // Skip symbols that do not have display information yet.
+                if (!asset) return null
 
-              <div className="asset-row">
-                <div className="asset-icon sol">≋</div>
-                <div className="asset-info">
-                  <strong>SOL</strong>
-                  <span>Solana</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$193.24</strong>
-                  <span className="negative">-0.42%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite SOL">★</button>
-              </div>
+                const isPositive = ticker.changePct >= 0
+                const symbol = ticker.symbol.split('/')[0]
 
-              <div className="asset-row">
-                <div className="asset-icon xrp">X</div>
-                <div className="asset-info">
-                  <strong>XRP</strong>
-                  <span>XRP</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$0.63</strong>
-                  <span className="positive">+3.21%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite XRP">★</button>
-              </div>
+                return (
+                  <div
+                    className={`asset-row ${ticker.symbol === 'BTC/USD' ? 'active' : ''}`}
+                    key={ticker.symbol}
+                  >
+                    <div className={`asset-icon ${asset.className}`}>
+                      {asset.icon}
+                    </div>
 
-              <div className="asset-row">
-                <div className="asset-icon bnb">◆</div>
-                <div className="asset-info">
-                  <strong>BNB</strong>
-                  <span>BNB</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$726.11</strong>
-                  <span className="positive">+0.84%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite BNB">★</button>
-              </div>
+                    <div className="asset-info">
+                      <strong>{symbol}</strong>
+                      <span>{asset.name}</span>
+                    </div>
 
-              <div className="asset-row">
-                <div className="asset-icon doge">Ð</div>
-                <div className="asset-info">
-                  <strong>DOGE</strong>
-                  <span>Dogecoin</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$0.181</strong>
-                  <span className="positive">+5.12%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite DOGE">★</button>
-              </div>
+                    <div className="asset-price">
+                      <strong>{formatPrice(ticker.last)}</strong>
+                      <span className={isPositive ? 'positive' : 'negative'}>
+                        {isPositive ? '+' : ''}{ticker.changePct.toFixed(2)}%
+                      </span>
+                    </div>
 
-              <div className="asset-row">
-                <div className="asset-icon ada">✣</div>
-                <div className="asset-info">
-                  <strong>ADA</strong>
-                  <span>Cardano</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$0.52</strong>
-                  <span className="negative">-1.23%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite ADA">★</button>
-              </div>
-
-              <div className="asset-row">
-                <div className="asset-icon avax">A</div>
-                <div className="asset-info">
-                  <strong>AVAX</strong>
-                  <span>Avalanche</span>
-                </div>
-                <div className="asset-price">
-                  <strong>$37.21</strong>
-                  <span className="positive">+4.31%</span>
-                </div>
-                <button className="star" type="button" aria-label="Favorite AVAX">★</button>
-              </div>
+                    <button
+                      className="star"
+                      type="button"
+                      aria-label={`Favorite ${symbol}`}
+                    >
+                      ★
+                    </button>
+                  </div>
+                )
+              })}
             </div>
           </aside>
 
@@ -135,10 +152,20 @@ function App() {
               <div className="market-main">
                 <div className="market-name">Bitcoin / USD</div>
 
-                <div className="market-price">$114,523.42</div>
+                <div className="market-price">
+                  {bitcoin ? formatPrice(bitcoin.last) : '—'}
+                </div>
 
                 <div className="market-change">
-                  ▲ 2.48% <span>24h</span>
+                  {bitcoin && (
+                    <>
+                      {bitcoin.changePct >= 0 ? '▲' : '▼'}{' '}
+                      <span className={bitcoin.changePct >= 0 ? 'positive' : 'negative'}>
+                        {bitcoin.changePct >= 0 ? '+' : ''}{bitcoin.changePct.toFixed(2)}%
+                      </span>{' '}
+                      <span>24h</span>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -246,6 +273,7 @@ function App() {
 
         </div>
       </main>
+      </>
       )}
     </>
   )
