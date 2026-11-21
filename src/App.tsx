@@ -50,12 +50,28 @@ function App() {
   const [favorites, setFavorites] = useState<string[]>([])
   
   const [view, setView] = useState<'market' | 'portfolio'>('market')// State to manage the current view
-    //store the latest market prices received from our backend.
+  // Store the text entered in the coin search field.
+  const [searchQuery, setSearchQuery] = useState('')
+  //store the latest market prices received from our backend.
   const [marketData, setMarketData] = useState<MarketTicker[]>([])
     // Find the currently selected cryptocurrency.
   const selectedTicker = marketData.find(
     (ticker) => ticker.symbol === selectedSymbol,
   )
+
+  // Filter available cryptocurrencies by symbol or name.
+const filteredMarketData = marketData.filter((ticker) => {
+  const asset = assetDetails[ticker.symbol]
+
+  if (!asset) return false
+
+  const query = searchQuery.trim().toLowerCase()
+
+  return (
+    ticker.symbol.toLowerCase().includes(query) ||
+    asset.name.toLowerCase().includes(query)
+  )
+})
   //store an error message if the market data request fails.
   const [marketError, setMarketError] = useState('')
   
@@ -137,8 +153,13 @@ function App() {
   }, [selectedSymbol,selectedTimeframe])
 
   return (
-    <>
-      <Header view={view} onViewChange={setView} />
+     <>
+      <Header
+        view={view}
+        onViewChange={setView}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
 
       {/* Pass the current view and the function to change it as props to the Header component */}
       {view === 'portfolio' ? (// Render the Portfolio component if the current view is portfolio
@@ -153,7 +174,7 @@ function App() {
             <p className="assets-title">ALL ASSETS ({marketData.length})</p>
 
             <div className="asset-list">
-              {marketData.map((ticker) => {
+              {filteredMarketData.map((ticker) => {
                 const asset = assetDetails[ticker.symbol]
 
                 // Skip symbols that do not have display information yet.
