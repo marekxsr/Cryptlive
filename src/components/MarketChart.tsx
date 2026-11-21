@@ -1,27 +1,33 @@
 import { Liveline } from 'liveline'
 import type { LivelinePoint } from 'liveline'
 
-const now = Math.floor(Date.now() / 1000)
+type MarketChartProps = {
+  data: LivelinePoint[]
+  value: number
+  timeframe: string
+}
 
-const data: LivelinePoint[] = [
-  { time: now - 540, value: 113400 },
-  { time: now - 480, value: 113650 },
-  { time: now - 420, value: 113520 },
-  { time: now - 360, value: 113900 },
-  { time: now - 300, value: 114100 },
-  { time: now - 240, value: 113850 },
-  { time: now - 180, value: 114300 },
-  { time: now - 120, value: 114150 },
-  { time: now - 60, value: 114500 },
-  { time: now, value: 114523 },
-]
+//сonvert the selected timeframe into seconds.
+const timeframeSeconds: Record<string, number> = {
+  '1m': 60,
+  '5m': 300,
+  '15m': 900,
+  '1h': 3600,
+  '4h': 14400,
+  '1D': 86400,
+  '1W': 604800,
+  '1M': 2592000,
+}
 
-function MarketChart() {
+function MarketChart({ data, value, timeframe }: MarketChartProps) {
+  const windowSeconds =
+    (timeframeSeconds[timeframe] ?? 300) * data.length
+
   return (
     <div className="market-chart">
       <Liveline
         data={data}
-        value={114523}
+        value={value}
         color="#3b82f6"
         theme="light"
         grid
@@ -31,7 +37,7 @@ function MarketChart() {
         momentum={false}
         fill={false}
         lineWidth={2}
-        window={600}
+        window={windowSeconds}
       />
     </div>
   )

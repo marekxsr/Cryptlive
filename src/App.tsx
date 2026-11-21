@@ -4,6 +4,8 @@ import MarketChart from './components/MarketChart'
 import { fetchMarketData } from './services/market'
 import type { MarketTicker } from './types/market'
 import Portfolio from './pages/Portfolio'
+import { fetchMarketHistory } from './services/marketHistory'
+import type { LivelinePoint } from 'liveline'
 
 
 // Define a type for asset details, including name, icon, and CSS class name.
@@ -37,6 +39,11 @@ function formatPrice(price: number): string {
 
 
 function App() {
+    // Store historical chart data and the selected timeframe.
+  const [chartData, setChartData] = useState<LivelinePoint[]>([])
+  const [selectedTimeframe, setSelectedTimeframe] = useState('5m')
+  const [chartError, setChartError] = useState('')
+
   const [view, setView] = useState<'market' | 'portfolio'>('market')// State to manage the current view
     //store the latest market prices received from our backend.
   const [marketData, setMarketData] = useState<MarketTicker[]>([])
@@ -46,6 +53,7 @@ function App() {
   )
   //store an error message if the market data request fails.
   const [marketError, setMarketError] = useState('')
+  
 
 
   // Load market data when the component opens and refresh it every 5 seconds.
@@ -83,7 +91,45 @@ function App() {
       isActive = false
       window.clearInterval(intervalId)
     }
+    
   }, [])
+
+    // Load historical Bitcoin prices when the selected timeframe changes.
+  useEffect(() => {
+    let isActive = true
+
+    const loadChartData = async () => {
+      try {
+        const history = await fetchMarketHistory(
+          'BTC/USD',
+          selectedTimeframe,
+        )
+
+        if (isActive) {
+          console.log(
+            `Loaded ${history.length} chart points for ${selectedTimeframe}`,
+          )
+
+          setChartData(history)
+          setChartError('')
+        }
+      } catch (error) {
+        if (isActive) {
+          setChartError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to load chart data',
+          )
+        }
+      }
+    }
+
+    void loadChartData()
+
+    return () => {
+      isActive = false
+    }
+  }, [selectedTimeframe])
 
   return (
     <>
@@ -192,18 +238,31 @@ function App() {
               </div>
             </div>
 
-            <MarketChart />
+                        {/* Display historical Bitcoin prices from Kraken */}
+            {chartError && <p role="alert">{chartError}</p>}
+
+            <MarketChart
+              data={chartData}
+              timeframe={selectedTimeframe}
+              value={
+                chartData.length > 0
+                  ? chartData[chartData.length - 1].value
+                  : bitcoin?.last ?? 0
+              }
+            />
 
             {/* Render the MarketChart component */}
             <nav className="timeframes" aria-label="Chart timeframe">
-              <button type="button">1m</button>
-              <button type="button" className="active">5m</button>
-              <button type="button">15m</button>
-              <button type="button">1h</button>
-              <button type="button">4h</button>
-              <button type="button">1D</button>
-              <button type="button">1W</button>
-              <button type="button">1M</button>
+              {['1m', '5m', '15m', '1h', '4h', '1D', '1W', '1M'].map(timeframe => (
+                <button
+                  key={timeframe}
+                  type="button"
+                  className={selectedTimeframe === timeframe ? 'active' : ''}
+                  onClick={() => setSelectedTimeframe(timeframe)}
+                >
+                  {timeframe}
+                </button>
+              ))}
             </nav>
 
           </section>

@@ -28,6 +28,7 @@ const timeIntervals: Record<string, number> = {
   '4h': 240,
   '1D': 1440,
   '1W': 10080,
+  '1M': 43200,
 }
 
 const historyCache = new Map<
@@ -40,13 +41,15 @@ export async function fetchMarketHistory(
   timeframe: string,
 ): Promise<MarketCandle[]> {
   const pair = tradingPairs[symbol]
-  const interval = timeIntervals[timeframe]
+  //kraken provides daily candle, monthly candles are aggregated below
+  const interval = timeframe === '1M' ? 1440 : timeIntervals[timeframe]
 
   if (!pair || !interval) {
     throw new Error('Unsupported trading pair or timeframe')
   }
 
-  const cacheKey = `${pair}:${interval}`
+  // Keep monthly and daily cache entries separate.
+  const cacheKey = `${pair}:${timeframe}`
   const cached = historyCache.get(cacheKey)
 
   if (cached && cached.expiresAt > Date.now()) {
@@ -97,14 +100,47 @@ export async function fetchMarketHistory(
       candle.close > 0,
   )
 
+  // Combine daily candles into monthly OHLCV candles.
+const monthlyCandles: MarketCandle[] = []
+
+if (timeframe === '1M') {
+  const monthlyGroups = new Map<string, MarketCandle[]>()
+
+  for (const candle of validCandles) {
+    const date = new Date(candle.time * 1000)
+    const monthKey = `${date.getUTCFullYear()}-${date.getUTCMonth()}`
+
+    const group = monthlyGroups.get(monthKey) ?? []
+    group.push(candle)
+    monthlyGroups.set(monthKey, group)
+  }
+
+  for (const group of monthlyGroups.values()) {
+    monthlyCandles.push({
+      time: group[0].time,
+      open: group[0].open,
+      high: Math.max(...group.map(candle => candle.high)),
+      low: Math.min(...group.map(candle => candle.low)),
+      close: group[group.length - 1].close,
+      volume: group.reduce((total, candle) => total + candle.volume, 0),
+    })
+  }
+}
+
+const resultCandles =
+  timeframe === '1M' ? monthlyCandles : validCandles
+
+// Sort monthly candles chronologically before returning them.
+resultCandles.sort((a, b) => a.time - b.time)
+
   if (validCandles.length === 0) {
     throw new Error('No valid market candles received')
   }
 
   historyCache.set(cacheKey, {
-    candles: validCandles,
+    candles: resultCandles,
     expiresAt: Date.now() + 15000,
   })
 
-  return validCandles
+  return resultCandles
 }
