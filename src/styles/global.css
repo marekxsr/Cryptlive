@@ -831,6 +831,10 @@ svg {
   background: #f7931a;
 }
 
+.asset-icon.link {
+  background: #375bd2;
+}
+
 .asset-icon.eth {
   background: #627eea;
 }

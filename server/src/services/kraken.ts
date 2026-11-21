@@ -11,6 +11,7 @@ const symbols = [
   'DOGE/USD',
   'ADA/USD',
   'AVAX/USD',
+  'LINK/USD',
 ]
 
 export type KrakenTicker = {

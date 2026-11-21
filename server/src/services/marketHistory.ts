@@ -18,6 +18,7 @@ const tradingPairs: Record<string, string> = {
   'ADA/USD': 'ADAUSD',
   'AVAX/USD': 'AVAXUSD',
   'BNB/USD': 'BNBUSD',
+  'LINK/USD': 'LINKUSD',
 }
 
 const timeIntervals: Record<string, number> = {

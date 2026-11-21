@@ -25,6 +25,7 @@ const assetDetails: Record<string, AssetDetails> = {
   'DOGE/USD': { name: 'Dogecoin', icon: 'Ð', className: 'doge' },
   'ADA/USD': { name: 'Cardano', icon: '✣', className: 'ada' },
   'AVAX/USD': { name: 'Avalanche', icon: 'A', className: 'avax' },
+  'LINK/USD': { name: 'Chainlink', icon: '⬡', className: 'link' },
 }
 
 // Format prices with more decimal places for cheaper coins.
@@ -283,8 +284,13 @@ function App() {
 
             <div className="trending-list">
 
-              <div className="trending-row">
-                <div className="trending-icon link">↗</div>
+              <div
+                className="trending-row"
+                onClick={() => setSelectedSymbol('LINK/USD')}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="trending-icon link">⬡</div>
 
                 <div className="trending-info">
                   <strong>LINK</strong>
@@ -294,7 +300,12 @@ function App() {
                 <span className="positive">+6.44%</span>
               </div>
 
-              <div className="trending-row">
+              <div
+                className="trending-row"
+                onClick={() => setSelectedSymbol('DOGE/USD')}
+                role="button"
+                tabIndex={0}
+              >
                 <div className="trending-icon doge">Ð</div>
 
                 <div className="trending-info">
@@ -305,7 +316,12 @@ function App() {
                 <span className="positive">+5.12%</span>
               </div>
 
-              <div className="trending-row">
+              <div
+                className="trending-row"
+                onClick={() => setSelectedSymbol('AVAX/USD')}
+                role="button"
+                tabIndex={0}
+              >
                 <div className="trending-icon avax">A</div>
 
                 <div className="trending-info">
@@ -316,7 +332,12 @@ function App() {
                 <span className="positive">+4.31%</span>
               </div>
 
-              <div className="trending-row">
+                <div
+                  className="trending-row"
+                  onClick={() => setSelectedSymbol('XRP/USD')}
+                  role="button"
+                  tabIndex={0}
+                >
                 <div className="trending-icon xrp">X</div>
 
                 <div className="trending-info">
@@ -327,7 +348,12 @@ function App() {
                 <span className="positive">+3.21%</span>
               </div>
 
-              <div className="trending-row">
+              <div
+                className="trending-row"
+                onClick={() => setSelectedSymbol('BTC/USD')}
+                role="button"
+                tabIndex={0}
+              >
                 <div className="trending-icon btc">₿</div>
 
                 <div className="trending-info">
