@@ -43,13 +43,15 @@ function App() {
   const [chartData, setChartData] = useState<LivelinePoint[]>([])
   const [selectedTimeframe, setSelectedTimeframe] = useState('5m')
   const [chartError, setChartError] = useState('')
+  // Store the currently selected cryptocurrency
+  const [selectedSymbol, setSelectedSymbol] = useState('BTC/USD')
 
   const [view, setView] = useState<'market' | 'portfolio'>('market')// State to manage the current view
     //store the latest market prices received from our backend.
   const [marketData, setMarketData] = useState<MarketTicker[]>([])
-  // Find Bitcoin in the latest market data.
-  const bitcoin = marketData.find(
-    (ticker) => ticker.symbol === 'BTC/USD',
+    // Find the currently selected cryptocurrency.
+  const selectedTicker = marketData.find(
+    (ticker) => ticker.symbol === selectedSymbol,
   )
   //store an error message if the market data request fails.
   const [marketError, setMarketError] = useState('')
@@ -100,10 +102,10 @@ function App() {
 
     const loadChartData = async () => {
       try {
-        const history = await fetchMarketHistory(
-          'BTC/USD',
-          selectedTimeframe,
-        )
+          const history = await fetchMarketHistory(
+            selectedSymbol,
+            selectedTimeframe,
+          )
 
         if (isActive) {
           console.log(
@@ -129,7 +131,7 @@ function App() {
     return () => {
       isActive = false
     }
-  }, [selectedTimeframe])
+  }, [selectedSymbol,selectedTimeframe])
 
   return (
     <>
@@ -158,10 +160,19 @@ function App() {
                 const symbol = ticker.symbol.split('/')[0]
 
                 return (
-                  <div
-                    className={`asset-row ${ticker.symbol === 'BTC/USD' ? 'active' : ''}`}
-                    key={ticker.symbol}
-                  >
+                    <div
+                      className={`asset-row ${ticker.symbol === selectedSymbol ? 'active' : ''}`}
+                      key={ticker.symbol}
+                      onClick={() => setSelectedSymbol(ticker.symbol)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault()
+                          setSelectedSymbol(ticker.symbol)
+                        }
+                      }}
+                    >
                     <div className={`asset-icon ${asset.className}`}>
                       {asset.icon}
                     </div>
@@ -196,18 +207,18 @@ function App() {
             {/* Chart section */}
             <div className="market-info">
               <div className="market-main">
-                <div className="market-name">Bitcoin / USD</div>
+                <div className="market-name">{selectedTicker?.symbol ?? '—'} / USD</div>
 
                 <div className="market-price">
-                  {bitcoin ? formatPrice(bitcoin.last) : '—'}
+                  {selectedTicker ? formatPrice(selectedTicker.last) : '—'}
                 </div>
 
                 <div className="market-change">
-                  {bitcoin && (
+                  {selectedTicker && (
                     <>
-                      {bitcoin.changePct >= 0 ? '▲' : '▼'}{' '}
-                      <span className={bitcoin.changePct >= 0 ? 'positive' : 'negative'}>
-                        {bitcoin.changePct >= 0 ? '+' : ''}{bitcoin.changePct.toFixed(2)}%
+                      {selectedTicker.changePct >= 0 ? '▲' : '▼'}{' '}
+                      <span className={selectedTicker.changePct >= 0 ? 'positive' : 'negative'}>
+                        {selectedTicker.changePct >= 0 ? '+' : ''}{selectedTicker.changePct.toFixed(2)}%
                       </span>{' '}
                       <span>24h</span>
                     </>
@@ -247,7 +258,7 @@ function App() {
               value={
                 chartData.length > 0
                   ? chartData[chartData.length - 1].value
-                  : bitcoin?.last ?? 0
+                  : selectedTicker?.last ?? 0
               }
             />
 
