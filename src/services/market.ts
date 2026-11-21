@@ -1,7 +1,7 @@
 import type { MarketResponse } from '../types/market'
 
 //local backend address used during development.
-const API_URL = 'http://localhost:3001/api/market'
+const API_URL = '/api/market'
 
 //request the latest market prices from our backend.
 export async function fetchMarketData(): Promise<MarketResponse> {
