@@ -46,7 +46,9 @@ function App() {
   const [chartError, setChartError] = useState('')
   // Store the currently selected cryptocurrency
   const [selectedSymbol, setSelectedSymbol] = useState('BTC/USD')
-
+  // Store the cryptocurrency symbols saved to the watchlist.
+  const [favorites, setFavorites] = useState<string[]>([])
+  
   const [view, setView] = useState<'market' | 'portfolio'>('market')// State to manage the current view
     //store the latest market prices received from our backend.
   const [marketData, setMarketData] = useState<MarketTicker[]>([])
@@ -191,9 +193,19 @@ function App() {
                     </div>
 
                     <button
-                      className="star"
+                      className={favorites.includes(ticker.symbol) ? 'star active' : 'star'}
                       type="button"
                       aria-label={`Favorite ${symbol}`}
+                      aria-pressed={favorites.includes(ticker.symbol)}
+                      onClick={(event) => {
+                        event.stopPropagation()
+
+                        setFavorites((previous) =>
+                          previous.includes(ticker.symbol)
+                            ? previous.filter((item) => item !== ticker.symbol)
+                            : [...previous, ticker.symbol]
+                        )
+                      }}
                     >
                       ★
                     </button>
