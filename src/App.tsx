@@ -163,7 +163,19 @@ const filteredMarketData = marketData.filter((ticker) => {
 
       {/* Pass the current view and the function to change it as props to the Header component */}
       {view === 'portfolio' ? (// Render the Portfolio component if the current view is portfolio
-        <Portfolio />
+      <Portfolio
+        favorites={favorites}
+        marketData={marketData}
+        onSelectAsset={(symbol) => {
+          setSelectedSymbol(symbol)
+          setView('market')
+        }}
+        onRemoveFavorite={(symbol) => {
+          setFavorites((previous) =>
+            previous.filter((item) => item !== symbol)
+          )
+        }}
+      />
       ) : (
       <>
       {marketError && <p role="alert">{marketError}</p>}

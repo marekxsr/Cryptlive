@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { krakenService } from './services/kraken'
 import { fetchMarketHistory } from './services/marketHistory'
+import { pool } from './db'
 
 const app = express()
 const PORT = 3001
@@ -14,6 +15,26 @@ app.get('/api/health', (_req, res) => {
     status: 'ok',
     message: 'Cryptlive backend is running',
   })
+})
+
+// Check whether the PostgreSQL database is available.
+app.get('/api/db-health', async (_req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW() AS current_time')
+
+    res.json({
+      status: 'ok',
+      database: 'connected',
+      time: result.rows[0].current_time,
+    })
+  } catch (error) {
+    console.error('Database connection failed:', error)
+
+    res.status(500).json({
+      status: 'error',
+      database: 'disconnected',
+    })
+  }
 })
 
 app.get('/api/market', (_req, res) => {

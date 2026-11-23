@@ -34,7 +34,7 @@ export default function Header({
           }`}
           onClick={() => onViewChange("portfolio")}
         >
-          My Portfolio
+          Watchlist
         </button>
       </nav>
 
