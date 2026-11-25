@@ -1,0 +1,17 @@
+//server 
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node10",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src/**/*.ts"]
+}
+

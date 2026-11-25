@@ -3,24 +3,28 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
- 
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "ws": "^8.22.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/connect-pg-simple": "^7.0.3",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
     "@types/node": "^26.6.4",
     "@types/ws": "^8.18.2",
     "tsx": "^4.23.15",

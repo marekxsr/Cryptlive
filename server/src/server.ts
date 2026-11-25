@@ -1,11 +1,16 @@
 import express from 'express'
 import cors from 'cors'
+import { sessionMiddleware } from './session'
 import { krakenService } from './services/kraken'
 import { fetchMarketHistory } from './services/marketHistory'
 import { pool } from './db'
 
 const app = express()
+//enable PostgreSQL-backed user sessions.
+app.use(sessionMiddleware)
+
 const PORT = 3001
+
 
 app.use(cors())
 app.use(express.json())

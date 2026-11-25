@@ -7,7 +7,7 @@ dotenv.config({
   path: path.resolve(__dirname, '../../.env'),
 })
 
-//create a PostgreSQL connection pool.
+//create a postgreSQL connection pool.
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   connectionTimeoutMillis: 10000,
